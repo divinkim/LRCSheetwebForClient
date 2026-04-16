@@ -104,7 +104,7 @@ export default function HomeClient() {
                             {
                                 cardComponentArray.map((item, index) => (
                                     <Link key={index} href={item.href} onClick={() => {
-                                    }} className="rounded-md dark:bg-gray-900 dark:border-gray-800 ease duration-500 hover:scale-105 bg-white   bg-white shadow-xl border border-gray-200 cursor-pointer flex flex-col space-y-5 p-4">
+                                    }} className="rounded-md dark:bg-gray-900 dark:border-gray-800 ease duration-500 hover:scale-105  bg-white shadow-xl border border-gray-200 cursor-pointer flex flex-col space-y-5 p-4">
                                         <div className="flex justify-between">
                                             <div>
                                                 <h1 className="font-extrabold text-xl text-gray-700 dark:text-gray-300">{item.title}</h1>
@@ -125,14 +125,14 @@ export default function HomeClient() {
 
                         <div className="flex sm:flex-col pt-10 lg:flex-row gap-5 w-full">
                             <div className="w-full flex-col space-y-4 flex lg:space-x-4 lg:flex-row">
-                                <div className="w-full dark:bg-gray-900 h-[470px] lg:h-auto lg:w-1/2 border border-gray-300 dark:border-gray-800 p-5 rounded-lg shadow-xl bg-white dark:bg-gray-800">
+                                <div className="w-full dark:bg-gray-900 h-[470px] lg:h-auto lg:w-1/2 border border-gray-300 dark:border-gray-800 p-5 rounded-lg shadow-xl bg-white">
                                     <h2 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-300">
                                         Présences du mois
                                     </h2>
                                     <Chart options={donutOptions} series={donutSeries} type="donut" height={350} />
                                 </div>
 
-                                <div className="w-full  border border-gray-300 dark:border-gray-800 p-5 rounded-lg shadow-xl dark:bg-gray-900 bg-white dark:bg-gray-800">
+                                <div className="w-full  border border-gray-300 dark:border-gray-800 p-5 rounded-lg shadow-xl  bg-white dark:bg-gray-800">
                                     <h2 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-300">
                                         Présences par jour
                                     </h2>

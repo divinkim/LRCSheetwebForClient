@@ -88,7 +88,9 @@ export default function useHome() {
       const token = localStorage.getItem('token');
       const UserId = localStorage.getItem("UserId");
 
-      if (!token && typeof (window) !== "undefined") return window.location.href = "/";
+      const fcmToken = localStorage.getItem("fcmToken");
+
+      if (!token || !fcmToken) return window.location.href = "/";
       setIsLoading(false);
 
       const getAllPresencesOfUser = await providers.API.getAll(providers.APIUrl, "getAttendances", Number(UserId));
@@ -98,9 +100,18 @@ export default function useHome() {
 
       const getUser = await providers.API.getOne(providers.APIUrl, "getUser", Number(UserId));
 
+      const fcmTokenResponse = await providers.API.post(providers.APIUrl, "sendFcmToken", null, {
+        id: Number(UserId),
+        UserEnterpriseId: Number(getUser.EnterpriseId),
+        fcmToken
+      });
+
+      console.log(fcmTokenResponse)
+      
       setAllPresencesOfUser(getAllPresencesOfUser);
       setAllRepportsOfUser(getAllRepportsOfUser);
       setUserId(UserId);
+
       setUser({
         firstname: getUser.firstname,
         lastname: getUser.lastname,

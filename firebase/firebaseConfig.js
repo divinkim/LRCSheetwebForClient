@@ -2,15 +2,16 @@ import { initializeApp } from "firebase/app";
 import { getMessaging } from "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: "AIzaSy...",
+  apiKey: "AIzaSyBB_fGNjfj2w8Y4lgG2nGw0vxrevVcaVb0",
   authDomain: "lrcsheetmobile.firebaseapp.com",
-  databaseURL: "...",
+  databaseURL: "https://lrcsheetmobile-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "lrcsheetmobile",
   storageBucket: "lrcsheetmobile.firebasestorage.app",
   messagingSenderId: "239069891450",
-  appId: "1:239069891450:web:533039010fc1189bb824c3",
-  measurementId: "G-PNS4WDS2XK",
+  appId: "1:239069891450:web:ee8abf82c22a2b56b824c3",
+  measurementId: "G-P1ZQL9MLWE"
 };
+
 
 const app = initializeApp(firebaseConfig);
 

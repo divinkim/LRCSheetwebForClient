@@ -24,13 +24,14 @@ import {
     faUserCheck,
     faPenToSquare,
     faListCheck,
-    faCalendarDays
+    faCalendarDays,
+    faMessage
 
 } from "@fortawesome/free-solid-svg-icons";
 import { getFirebaseMessaging } from "@/firebase/firebaseConfig";
 import { onMessage } from "firebase/messaging";
 import Swal from "sweetalert2";
-
+import { useSidebarContext } from "../sidebar-context";
 type notificationProps = {
     path: string,
     adminSectionIndex: string,
@@ -47,7 +48,7 @@ export default function SidebarHook() {
     const DB_NAME = "NotificationDB";
     const DB_VERSION = 2;
     const STORE_NAME = "notifications";
-
+    const {isMobile} = useSidebarContext()
     function openDB(): Promise<IDBDatabase> {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -145,13 +146,13 @@ export default function SidebarHook() {
         // Onglet notifications
         {
             index: 0,
-            title: "🔔 Notification",
+            title: "🔔 Notification & chat",
             ItemLists: [
                 {
                     index: 0,
-                    title: "Liste de notification",
-                    href: "/home",
-                    icon: faBell
+                    title: "Chat",
+                    href: "/dashboard/NOTIF/chat",
+                    icon: faMessage
                 },
             ]
         },
@@ -268,5 +269,5 @@ export default function SidebarHook() {
         return getNotificationsCount.length;
     }
 
-    return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount, getUserNotificationsCount };
+    return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount, getUserNotificationsCount, isMobile };
 }

@@ -58,6 +58,8 @@ export function PresencesListHookModal() {
         (() => {
             if (typeof (window) === "undefined") return;
             const EnterpriseId = localStorage.getItem("EnterpriseId");
+            const fcmToken = localStorage.getItem("fcmToken");
+            if (!fcmToken) return window.location.href = "/";
             if (!EnterpriseId) return window.location.href = "/dashboard/home"
         })()
         getAllAttendancesOfUser()

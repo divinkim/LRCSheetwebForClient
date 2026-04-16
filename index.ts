@@ -84,7 +84,14 @@ const filterDataOfAdministrationSection = (array: MonthData[], input: string, mo
     const datas = array.filter((data: { monthIndice: number, EnterpriseId: number, User: { lastname: string, firstname: string } }) => data.monthIndice === monthIndice && data.EnterpriseId === getAdminEnterpriseId && (data.User?.firstname.toLowerCase()?.includes(input.toLowerCase())) || data.User?.lastname?.toLowerCase().includes(input.toLowerCase()));
     return datas;
 }
-
+function reduceLengthOfText(text: string, maxLength: number) {
+    if (typeof (text) !== "undefined") {
+        if (text.length > maxLength) {
+            return text.slice(0, maxLength).trim() + "...";
+        }
+        return text;
+    }
+}
 const daysOfWeek = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
 export class Api {
@@ -270,7 +277,7 @@ export class Api {
 
 export const API = new Api();
 
-export const providers = { alertMessage, API, navigateBetweenMonths, daysOfWeek, filterDataOfAdministrationSection, verifyRequireField, APIUrl }
+export const providers = { alertMessage, API, navigateBetweenMonths, daysOfWeek, filterDataOfAdministrationSection, verifyRequireField, APIUrl, reduceLengthOfText }
 
 
 

@@ -150,7 +150,7 @@ export function Sidebar() {
                           toggleAsideSections.filter(item => item !== sectionIndex)
                           : [...toggleAsideSections, sectionIndex]
                       )
-                    }} className="transition-all duration-1000 ease-in-out flex cursor-pointer p-2 bg-gray-800 relative z-20 hover:bg-gray-900 ease  text-gray-300 flex-row items-center justify-between">
+                    }} className="transition-all duration-1000 ease-in-out flex cursor-pointer p-2 bg-gray-800 relative z-20 hover:bg-gray-800/80 ease  text-gray-300 flex-row items-center justify-between">
                       <div>
                         <h3 className="font-bold">{aside.title ?? ""} <span className='relative left-2 text-white rounded-full px-[6px]'>
                         </span>

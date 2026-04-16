@@ -3,10 +3,15 @@ import { providers } from "@/index";
 
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { getFirebaseMessaging } from "@/firebase/firebaseConfig";
+import { getToken } from "firebase/messaging";
+
 export default function useAuth() {
     const [showPassword, setShowPassword] = useState(false);
     const [showSpinner, setShowSpinner] = useState(false);
     const [loadingPage, setLoadingPage] = useState(true);
+    const messaging = getFirebaseMessaging();
+
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
@@ -29,6 +34,27 @@ export default function useAuth() {
         }, 3000);
         return;
     }
+    useEffect(() => {
+        (async () => {
+            try {
+                await Notification.requestPermission().then(async (permission) => {
+                    if (permission === "granted") {
+                        if (!messaging) return
+                        console.log("permission accordée")
+                        const adminFcmToken = await getToken(messaging, {
+                            vapidKey: "BM91689dVSwzQt0EWC0MmE0UBLvdkXzahkR0-UFppnWI3rOP8OTakisMCaxco0lXPZzx6jmxbtsbzWECTN6K6lg",
+                        });
+                        console.log("le token", adminFcmToken)
+                        if (adminFcmToken) localStorage.setItem("fcmToken", adminFcmToken);
+                    } else {
+                        console.log("permissions non accordées")
+                    }
+                })
+            } catch (error) {
+                console.error(error)
+            }
+        })();
+    }, [])
 
     const authFunction = async () => {
         setShowSpinner(true);
