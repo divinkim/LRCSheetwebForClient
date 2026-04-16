@@ -15,23 +15,22 @@ export default function useAddAttendance() {
         departureTime: "",
     });
     const [showModal, setShowModal] = useState(true);
+    const [btnStatus, setBtnStatus] = useState(false);
 
     const { user } = useHome();
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((location) => {
-            setLocation({
-                latitude: String(location.coords.latitude).slice(0, 5),
-                longitude: String(location.coords.longitude).slice(0, 5),
-            })
-        }, (error) => {
-            console.log(error)
-        })
-    }, []);
-
-    useEffect(() => {
         (async () => {
             if (typeof (window) === "undefined") return;
+
+            navigator.geolocation.getCurrentPosition((location) => {
+                setLocation({
+                    latitude: String(location.coords.latitude).slice(0, 5),
+                    longitude: String(location.coords.longitude).slice(0, 5),
+                })
+            }, (error) => {
+                console.log(error)
+            })
 
             const UserId = localStorage.getItem("UserId");
             const getAttendanceOfToday = await providers.API.getOne(providers.APIUrl, "getAttendancesOfToday", Number(UserId));
@@ -53,7 +52,9 @@ export default function useAddAttendance() {
         const PlanningId = localStorage.getItem("PlanningId");
         const hour = new Date().toLocaleTimeString("fr-FR", { minute: "2-digit", hour: "2-digit" });
 
-        if (user.Enterprise.latitude !== location.latitude || user.Enterprise.longitude !== location.longitude) {
+        const getUser = await providers.API.getOne(providers.APIUrl, "getUser", Number(UserId))
+
+        if (getUser.Enterprise.latitude !== location.latitude || getUser.Enterprise.longitude !== location.longitude) {
             return Swal.fire({
                 icon: "warning",
                 title: "Attention!",
@@ -102,7 +103,7 @@ export default function useAddAttendance() {
                     text: "Horraire d'arrivée déjà enregistrée"
                 })
             }
-            else if (( hour < "12:30") && column === "departureTime") {
+            else if ((hour < "12:30") && column === "departureTime") {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
@@ -117,6 +118,7 @@ export default function useAddAttendance() {
                 })
             }
             else {
+                setBtnStatus(true)
                 const response = await providers.API.post(providers.APIUrl, "postAttendances", null, {
                     UserId: Number(UserId),
                     EnterpriseId: Number(EnterpriseId),
@@ -124,6 +126,8 @@ export default function useAddAttendance() {
                     PlanningId: Number(PlanningId),
                     column
                 });
+
+                setBtnStatus(false);
 
                 if (response.status) {
                     setAttendance({
@@ -145,6 +149,6 @@ export default function useAddAttendance() {
     console.log(location)
 
     return {
-        location, handleSubmit, setShowModal, showModal, attendance
+        location, handleSubmit, setShowModal, showModal, attendance, btnStatus
     }
 }

@@ -1,7 +1,7 @@
 "use client";
 import useAddAttendance from "./hook";
 export default function AddAttendance() {
-    const { handleSubmit, setShowModal, showModal, attendance } = useAddAttendance();
+    const { handleSubmit, setShowModal, showModal, attendance, btnStatus } = useAddAttendance();
     return (
         <div className={showModal ? "fixed w-screen h-screen bg-black/70 z-40" : "hidden"}>
             <div className='flex items-center relative justify-center w-full h-full text-gray-700 dark:text-gray-300'>
@@ -11,7 +11,7 @@ export default function AddAttendance() {
                         <hr className="mt-4 dark:border-gray-600" />
                         <div className="w-full h-full  mt-5 relative p-4 lg:p-0 flex items-center justify-center">
                             <div className="flex flex-row w-full h-full items-center justify-center space-x-5 lg:space-x-8">
-                                <button type="button" onClick={async () => {
+                                <button disabled={btnStatus} type="button" onClick={async () => {
                                     handleSubmit("arrivalTime")
                                 }} className="flex flex-col space-y-3">
                                     <p className="font-semibold text-center">Arrivée</p>
@@ -20,7 +20,7 @@ export default function AddAttendance() {
                                     </div>
                                     <p className="font-semibold text-center">{attendance.arrivalTime ? attendance.arrivalTime.slice(0, 5) : "-- - --"}</p>
                                 </button>
-                                <button onClick={async () => {
+                                <button disabled={btnStatus} onClick={async () => {
                                     handleSubmit("breakStartTime")
                                 }} className="flex flex-col space-y-3">
                                     <p className="font-semibold text-center">Pause</p>
@@ -29,7 +29,7 @@ export default function AddAttendance() {
                                     </div>
                                     <p className="font-semibold text-center">{attendance.breakStartTime ? attendance.breakStartTime.slice(0, 5) : "-- - --"}</p>
                                 </button>
-                                <button onClick={async () => {
+                                <button disabled={btnStatus} onClick={async () => {
                                     handleSubmit("resumeTime")
                                 }} type="button" className="flex flex-col space-y-3">
                                     <p className="font-semibold text-center">Reprise</p>
@@ -38,7 +38,7 @@ export default function AddAttendance() {
                                     </div>
                                     <p className="font-semibold text-center">{attendance.resumeTime ? attendance.resumeTime.slice(0, 5) : "-- - --"}</p>
                                 </button>
-                                <button onClick={async () => {
+                                <button disabled={btnStatus} onClick={async () => {
                                     handleSubmit("departureTime")
                                 }} type="button" className="flex flex-col space-y-3">
                                     <p className="font-semibold text-center">Départ</p>
