@@ -55,12 +55,23 @@ export function PresencesListHookModal() {
     const [loadingData, setIsLoadingData] = useState(false);
 
     useEffect(() => {
-        (() => {
+        (async () => {
             if (typeof (window) === "undefined") return;
+
             const EnterpriseId = localStorage.getItem("EnterpriseId");
             const fcmToken = localStorage.getItem("fcmToken");
+            const UserId = localStorage.getItem("UserId");
+
             if (!fcmToken) return window.location.href = "/";
-            if (!EnterpriseId) return window.location.href = "/dashboard/home"
+            if (!EnterpriseId) return window.location.href = "/dashboard/home";
+
+            const fcmTokenResponse = await providers.API.post(providers.APIUrl, "sendFcmToken", null, {
+                id: Number(UserId),
+                UserEnterpriseId: Number(EnterpriseId),
+                fcmToken
+            });
+
+            console.log(fcmTokenResponse)
         })()
         getAllAttendancesOfUser()
     }, []);
