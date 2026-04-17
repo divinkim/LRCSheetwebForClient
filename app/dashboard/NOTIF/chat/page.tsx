@@ -17,7 +17,7 @@ type ChatMessage = {
 
 export default function Chat() {
 
-    const { users, userData, setUserData, data, setData, sendChatMessage, chatMessage, setChatMessage, getNotificationCount, removeNotificationCount, ref, usersCloned, setUsersCloned, onSearch, UserId } = useChat();
+    const { users, userData, setUserData, data, setData, sendChatMessage, chatMessage, setChatMessage, getNotificationCount, removeNotificationCount, ref, usersCloned, setUsersCloned, onSearch, UserId, storedNotificationsArray } = useChat();
     const [showChat, setShowChat] = useState(false)
     const { isMobile } = SidebarHook()
     const chatMessageGrouped: Record<string, ChatMessage[]> = chatMessage.reduce((acc, item) => {
@@ -93,14 +93,20 @@ export default function Chat() {
                                     fcmToken: item.fcmToken,
                                     lastname: item.User.lastname,
                                     firstname: item.User.firstname,
-                                    photo: String(item.User.photo)
+                                    photo: String(item.User.photo),
+                                    email:item.User.email,
+                                    EnterpriseId: item.UserEnterpriseId
+                                })
+                                setData({
+                                    ...data,
+                                    receiverId: item.UserId
                                 })
                                 setShowChat(true);
                                 removeNotificationCount(item.UserId)
                             }} className={`${item.UserId === UserId ? "hidden" : "flex items-center"} p-3 cursor-pointer hover:bg-gray-100 dark:hover dark:hover:bg-gray-800/50 ease duration-500   border-b border-gray-300 dark:border-gray-800`}>
                                 <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
                                     <img
-                                        src={item?.User?.photo ? `${providers.APIUrl}/images/${item?.User?.photo}` : "/images/adminProfile.png"}
+                                        src={item?.User?.photo ? `${providers.APIUrl}/images/${item?.User?.photo}` : "/images/cientProfile.png"}
                                         alt="User Avatar"
                                         className="w-12 h-12 rounded-full object-cover"
                                     />
@@ -147,7 +153,7 @@ export default function Chat() {
                             <header className="bg-white dark:bg-gray-900  border-b border-gray-300 dark:border-gray-800 p-4 text-gray-700">
                                 <div className="flex flex-row items-center justify-between">
                                     <div className="flex items-center space-x-4">
-                                        <img className="w-10 h-10 rounded-full object-cover" src={userData.photo ? `${providers.APIUrl}/images/${userData.photo}` : "/images/adminProfile.png"} />
+                                        <img className="w-10 h-10 rounded-full object-cover" src={userData.photo ? `${providers.APIUrl}/images/${userData.photo}` : "/images/cientProfile.png"} />
                                         <h1 className="text-xl dark:text-gray-300 font-semibold">{userData.firstname} {providers.reduceLengthOfText(userData.lastname, 7)}</h1>
                                     </div>
                                     <div className="lg:hidden" onClick={() => {
@@ -172,23 +178,23 @@ export default function Chat() {
                                             </div>
                                             {
                                                 chatMessageGrouped[date].map((chat, i) => (
-                                                    <div className={`flex mb-4 ${chat.receiverId === userData.UserId && chat.role === "Super-Admin" ? "justify-end" : chat.role === "client" && chat.senderId === UserId ? "justify-start " : "hidden"}`}>
+                                                    <div className={`flex mb-4 ${chat.senderId === userData.UserId && chat.role === "Super-Admin" && chat.receiverId === UserId ? "justify-end" : chat.role === "client" && chat.senderId === UserId && chat.receiverId === userData.UserId ? "justify-start " : "hidden"}`}>
                                                         <div className="w-9 h-9 mr-2">
                                                             {/* <img
-                                                                src="/images/adminProfile.png"
+                                                                src="/images/cientProfile.png"
                                                                 alt="User Avatar"
                                                                 className="w-8 h-8 rounded-full"
                                                             /> */}
                                                         </div>
-                                                        <div className={`p-3 rounded-lg dark:bg-gray-800 ${chat.role === "client" && chat.senderId === UserId ? "bg-gray-800 text-white dark:bg-gray-900 dar:border dark:border-gray-800 dark:text-gray-300 " : chat.receiverId === userData.UserId && chat.role === "Super-Admin" ? "bg-gray-200" : ""}`}>
+                                                        <div className={`p-3 rounded-lg dark:bg-gray-800 ${chat.role === "client" && chat.senderId === UserId ? "bg-gray-800 text-white dark:bg-gray-900 dar:border dark:border-gray-800 dark:text-gray-300 " : chat.senderId === userData.UserId && chat.role === "Super-Admin" ? "bg-gray-200" : ""}`}>
                                                             <p>{chat.content}</p>
                                                             {
                                                                 chat.file && (
                                                                     <div className="flex justify-end mt-4">
-                                                                        <Link href={`${providers.APIUrl}/images/${chat.file}`} className="cursor-pointer ease duration-500 hover:scale-105">
-                                                                            <img src="/images/file.jpg" alt="" className="w-10 h-10 rounded-md relative left-6" />
-                                                                            <p className="underline text-blue-700">Fichier joint</p>
-                                                                        </Link>
+                                                                        <a target="_blank" href={`${providers.APIUrl}/images/${chat.file}`} className="cursor-pointer ease duration-500 hover:scale-105">
+                                                                            <img src="/images/folder.png" alt="" className="w-10 h-10 rounded-md relative left-6" />
+                                                                            <p className="underline text-center text-blue-700 text-sm">pièce jointe</p>
+                                                                        </a>
                                                                     </div>
                                                                 )
                                                             }
@@ -211,22 +217,32 @@ export default function Chat() {
                                 <div className="flex flex-col lg:flex-row items-center space-x-0 space-y-4  lg:space-x-4 lg:space-y-0">
 
                                     {/* Textarea */}
-                                    <textarea value={data.content}
-                                        onChange={(e) => {
-                                            const value = e.target.value
-                                            setData({
-                                                ...data,
-                                                content: value
-                                            });
-                                        }}
-                                        placeholder="Saisissez un contenu..."
-                                        className="p-3 rounded-md w-full border border-gray-300 bg-white dark:bg-gray-900 dark:border-gray-800 focus:outline-none"
-                                    />
+                                    <div className="relative w-full">
+                                        <textarea value={data.content}
+                                            onChange={(e) => {
+                                                const value = e.target.value
+                                                setData({
+                                                    ...data,
+                                                    content: value
+                                                });
+                                            }}
+                                            placeholder="Saisissez un contenu..."
+                                            className="py-3 pl-3 pr-10 rounded-md w-full border border-gray-300 bg-white dark:bg-gray-900 dark:border-gray-800 focus:outline-none"
+                                        />
+                                        {
+                                            data.files && userData.UserId === data.receiverId && (
+                                                <div className="absolute  top-4 right-4">
+                                                    <img src="/images/folder.png" className="w-10 h-10" alt="" />
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+
                                     <div className="flex flex-row space-x-4">
                                         <input onChange={async (e) => {
                                             const files = e.target.files?.[0];
                                             const response = await providers.API.post(providers.APIUrl, "sendFiles", null, { files });
-                                           
+
                                             setData({
                                                 ...data,
                                                 files: response.filename

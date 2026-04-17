@@ -14,7 +14,8 @@ type Users = {
     User: {
         firstname: string,
         lastname: string,
-        photo: string | null
+        photo: string | null,
+        email: string
     }
 }
 
@@ -35,11 +36,14 @@ export function useChat() {
     const [userData, setUserData] = useState({
         fcmToken: "",
         UserId: 0,
+        EnterpriseId: 0,
         lastname: "",
         firstname: "",
         photo: "",
+        email: ""
     });
     const ref = useRef<HTMLDivElement | null>(null);
+
     const [data, setData] = useState({
         content: "",
         fcmToken: "",
@@ -48,7 +52,6 @@ export function useChat() {
         EnterpriseId: 0,
         files: "",
     })
-
 
 
     const [chatMessage, setChatMessage] = useState<ChatMessage[]>([]);
@@ -100,6 +103,10 @@ export function useChat() {
             setUsersCloned(newUsersArray);
             setChatMessage(chatMessage);
             setUserId(Number(UserId));
+            setData({
+                ...data,
+                senderId: Number(UserId)
+            })
         })()
     }, []);
 
@@ -120,6 +127,13 @@ export function useChat() {
             }
         })()
     }, [userData.fcmToken])
+
+    useEffect(() => {
+        (async () => {
+            const chatMessage = await providers.API.getAll(providers.APIUrl, "getChatMessage", null);
+            setChatMessage(chatMessage);
+        })()
+    }, [storedNotificationsArray])
 
     async function sendChatMessage() {
         if (!data.content)
@@ -142,7 +156,7 @@ export function useChat() {
         const response = await providers.API.post(providers.APIUrl, "createChatMessage", null, {
             content: data.content,
             receiverId: userData.UserId,
-            senderId: Number(UserId),
+            senderId: data.senderId,
             EnterpriseId: 1,
             file: data.files,
             role: "client",
@@ -154,8 +168,26 @@ export function useChat() {
             files: ""
         })
 
-        console.log(response)
+        if (response) {
+            const notification = await providers.API.post(providers.APIUrl, "sendNotificationToAdmin", null, {
+                path: "/dashboard/NOTIF/chat",
+                EnterpriseId: userData.EnterpriseId.toString(),
+                adminSectionIndex: 0,
+                adminPageIndex: 0,
+                receiverId: userData.UserId
+            });
+            const sendMail = await providers.API.post(providers.APIUrl, "sendMail", null, {
+                senderEmail: "grcinfos@gmail.com",
+                subject: "Notification non lue",
+                content: "Veuillez vous connecter sur le dashboard admin pour plus d'information.",
+                emails: [userData.email]
+            })
+            console.log(notification);
+            console.log(sendMail)
+        }
     }
+
+    console.log("le userData", userData)
 
     function onSearch(value: string) {
         const searchUsers = users.filter(item => item.User.firstname.toLowerCase().includes(value.toLowerCase()) || item.User.lastname.toLowerCase().includes(value.toLowerCase()));
@@ -164,5 +196,5 @@ export function useChat() {
 
     console.log("le tableau", chatMessage)
 
-    return { users, userData, setUserData, sendChatMessage, data, setData, chatMessage, setChatMessage, getNotificationCount, removeNotificationCount, ref, usersCloned, setUsersCloned, onSearch, UserId }
+    return { users, userData, setUserData, sendChatMessage, data, setData, chatMessage, setChatMessage, getNotificationCount, removeNotificationCount, ref, usersCloned, setUsersCloned, onSearch, UserId, storedNotificationsArray}
 }

@@ -101,6 +101,7 @@ export default function SidebarHook() {
         //Notifications live
         if (messaging) {
             const unsubscribe = onMessage(messaging, (remoteMessage) => {
+                console.log(remoteMessage)
                 const EnterpriseId = localStorage.getItem("EnterpriseId");
 
                 if (Number(remoteMessage.data?.EnterpriseId) === Number(EnterpriseId)) {
@@ -146,11 +147,11 @@ export default function SidebarHook() {
         // Onglet notifications
         {
             index: 0,
-            title: "🔔 Notification & chat",
+            title: "🔔 Notification",
             ItemLists: [
                 {
                     index: 0,
-                    title: "Chat",
+                    title: "Messagerie",
                     href: "/dashboard/NOTIF/chat",
                     icon: faMessage
                 },
