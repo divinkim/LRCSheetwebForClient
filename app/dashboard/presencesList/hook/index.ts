@@ -62,7 +62,7 @@ export function PresencesListHookModal() {
             const fcmToken = localStorage.getItem("fcmToken");
             const UserId = localStorage.getItem("UserId");
 
-            if (!fcmToken) return window.location.href = "/";
+            // if (!fcmToken) return window.location.href = "/";
             if (!EnterpriseId) return window.location.href = "/dashboard/home";
 
             const fcmTokenResponse = await providers.API.post(providers.APIUrl, "sendFcmToken", null, {

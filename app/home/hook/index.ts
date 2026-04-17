@@ -90,7 +90,7 @@ export default function useHome() {
 
       const fcmToken = localStorage.getItem("fcmToken");
 
-      if (!token || !fcmToken) return window.location.href = "/";
+      if (!token) return window.location.href = "/";
       setIsLoading(false);
 
       const getAllPresencesOfUser = await providers.API.getAll(providers.APIUrl, "getAttendances", Number(UserId));
