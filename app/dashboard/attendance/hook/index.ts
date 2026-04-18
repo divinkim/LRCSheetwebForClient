@@ -53,7 +53,7 @@ export default function useAddAttendance() {
         const EnterpriseId = localStorage.getItem("EnterpriseId");
         const PlanningId = localStorage.getItem("PlanningId");
         const hour = new Date().toLocaleTimeString("fr-FR", { minute: "2-digit", hour: "2-digit" });
-        const latOfEnterprise = localStorage.getItem("latitideOfEnterprise");
+        const latOfEnterprise = localStorage.getItem("latitudeOfEnterprise");
         const lngOfEnterprise = localStorage.getItem("longitudeOfEnterprise");
 
         if (latOfEnterprise !== location.latitude || lngOfEnterprise !== location.longitude) {
