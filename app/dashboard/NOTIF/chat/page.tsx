@@ -106,7 +106,7 @@ export default function Chat() {
                             }} className={`${item.UserId === UserId ? "hidden" : "flex items-center"} p-3 cursor-pointer hover:bg-gray-100 dark:hover dark:hover:bg-gray-800/50 ease duration-500   border-b border-gray-300 dark:border-gray-800`}>
                                 <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
                                     <img
-                                        src={item?.User?.photo ? `${providers.APIUrl}/images/${item?.User?.photo}` : "/images/cientProfile.png"}
+                                        src={item?.User?.photo ? `${providers.APIUrl}/images/${item?.User?.photo}` : "/images/clientProfile.png"}
                                         alt="User Avatar"
                                         className="w-12 h-12 rounded-full object-cover"
                                     />
@@ -153,7 +153,7 @@ export default function Chat() {
                             <header className="bg-white dark:bg-gray-900  border-b border-gray-300 dark:border-gray-800 p-4 text-gray-700">
                                 <div className="flex flex-row items-center justify-between">
                                     <div className="flex items-center space-x-4">
-                                        <img className="w-10 h-10 rounded-full object-cover" src={userData.photo ? `${providers.APIUrl}/images/${userData.photo}` : "/images/cientProfile.png"} />
+                                        <img className="w-10 h-10 rounded-full object-cover" src={userData.photo ? `${providers.APIUrl}/images/${userData.photo}` : "/images/clientProfile.png"} />
                                         <h1 className="text-xl dark:text-gray-300 font-semibold">{userData.firstname} {providers.reduceLengthOfText(userData.lastname, 7)}</h1>
                                     </div>
                                     <div className="lg:hidden" onClick={() => {
