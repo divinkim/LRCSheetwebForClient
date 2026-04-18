@@ -17,20 +17,22 @@ export default function useAddAttendance() {
     const [showModal, setShowModal] = useState(true);
     const [btnStatus, setBtnStatus] = useState(false);
 
-    const { user } = useHome();
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((location) => {
+            setLocation({
+                latitude: String(location.coords.latitude).slice(0, 5),
+                longitude: String(location.coords.longitude).slice(0, 5),
+            })
+        }, (error) => {
+            console.log(error)
+        })
+    }, []);
 
     useEffect(() => {
         (async () => {
             if (typeof (window) === "undefined") return;
 
-            navigator.geolocation.getCurrentPosition((location) => {
-                setLocation({
-                    latitude: String(location.coords.latitude).slice(0, 5),
-                    longitude: String(location.coords.longitude).slice(0, 5),
-                })
-            }, (error) => {
-                console.log(error)
-            })
+
 
             const UserId = localStorage.getItem("UserId");
             const getAttendanceOfToday = await providers.API.getOne(providers.APIUrl, "getAttendancesOfToday", Number(UserId));
@@ -51,10 +53,10 @@ export default function useAddAttendance() {
         const EnterpriseId = localStorage.getItem("EnterpriseId");
         const PlanningId = localStorage.getItem("PlanningId");
         const hour = new Date().toLocaleTimeString("fr-FR", { minute: "2-digit", hour: "2-digit" });
+        const latOfEnterprise = localStorage.getItem("latitideOfEnterprise");
+        const lngOfEnterprise = localStorage.getItem("longitudeOfEnterprise");
 
-        const getUser = await providers.API.getOne(providers.APIUrl, "getUser", Number(UserId))
-
-        if (getUser.Enterprise.latitude !== location.latitude || getUser.Enterprise.longitude !== location.longitude) {
+        if (latOfEnterprise !== location.latitude || lngOfEnterprise !== location.longitude) {
             return Swal.fire({
                 icon: "warning",
                 title: "Attention!",

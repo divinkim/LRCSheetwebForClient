@@ -75,14 +75,17 @@ export default function useAuth() {
         });
 
         if (!response.status) {
-            alertMessage(response.message)
+            providers.alertMessage(response.status, response.title, response.message, "/");
             return;
         }
 
         const data = {
             token: response.user.token,
             UserId: response.user.UserId,
+            latitudeOfEnterprise: response.user.latitude,
+            longitudeOfEnterprise: response.user.longitude,
         }
+
         for (const [key, value] of Object.entries(data)) {
             localStorage.setItem(key, String(value));
         }

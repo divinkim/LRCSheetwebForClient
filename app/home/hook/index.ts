@@ -87,10 +87,12 @@ export default function useHome() {
       if (typeof (window) === "undefined") return;
       const token = localStorage.getItem('token');
       const UserId = localStorage.getItem("UserId");
-
       const fcmToken = localStorage.getItem("fcmToken");
+      const latitudeOfEnterprise = localStorage.getItem("latitudeOfEnterprise");
+      const longitudeOfEnterprise = localStorage.getItem("longitudeOfEnterprise");
 
-      if (!token) return window.location.href = "/";
+      // if (!token) return window.location.href = "/";
+      if (!latitudeOfEnterprise || !longitudeOfEnterprise) return window.location.href = "/";
       setIsLoading(false);
 
       const getAllPresencesOfUser = await providers.API.getAll(providers.APIUrl, "getAttendances", Number(UserId));
@@ -107,7 +109,7 @@ export default function useHome() {
       });
 
       console.log(fcmTokenResponse)
-      
+
       setAllPresencesOfUser(getAllPresencesOfUser);
       setAllRepportsOfUser(getAllRepportsOfUser);
       setUserId(UserId);
