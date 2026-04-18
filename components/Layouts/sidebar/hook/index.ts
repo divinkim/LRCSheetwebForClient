@@ -147,11 +147,11 @@ export default function SidebarHook() {
         // Onglet notifications
         {
             index: 0,
-            title: "🔔 Notification",
+            title: "💬 Messagerie",
             ItemLists: [
                 {
                     index: 0,
-                    title: "Messagerie",
+                    title: "Chat",
                     href: "/dashboard/NOTIF/chat",
                     icon: faMessage
                 },
@@ -161,7 +161,7 @@ export default function SidebarHook() {
         // Onglet Ressources humaines
         {
             index: 2,
-            title: "👥 Gestion de présence",
+            title: "📅 Gestion de présence",
             ItemLists: [
                 {
                     index: 1,
@@ -192,37 +192,37 @@ export default function SidebarHook() {
             ]
         },
 
-        {
-            index: 4,
-            title: "🛂 Gestion de permission",
-            ItemLists: [
-                {
-                    index: 0,
-                    title: "Demander une permission",
-                    href: "/home",
-                    icon: faPaperPlane
-                },
-                {
-                    index: 1,
-                    title: "Liste des permissions",
-                    href: "/home",
-                    icon: faListCheck
-                },
-            ]
-        },
+        // {
+        //     index: 4,
+        //     title: "🛂 Gestion de permission",
+        //     ItemLists: [
+        //         {
+        //             index: 0,
+        //             title: "Demander une permission",
+        //             href: "/home",
+        //             icon: faPaperPlane
+        //         },
+        //         {
+        //             index: 1,
+        //             title: "Liste des permissions",
+        //             href: "/home",
+        //             icon: faListCheck
+        //         },
+        //     ]
+        // },
 
-        {
-            index: 5,
-            title: "🏖️ Gestion de congé",
-            ItemLists: [
-                {
-                    index: 0,
-                    title: "Calendrier de congé",
-                    href: "/home",
-                    icon: faCalendarDays
-                },
-            ]
-        },
+        // {
+        //     index: 5,
+        //     title: "🏖️ Gestion de congé",
+        //     ItemLists: [
+        //         {
+        //             index: 0,
+        //             title: "Calendrier de congé",
+        //             href: "/home",
+        //             icon: faCalendarDays
+        //         },
+        //     ]
+        // },
 
         // Onglet Comptabilité
         {

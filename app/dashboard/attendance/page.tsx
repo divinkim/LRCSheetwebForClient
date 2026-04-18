@@ -1,4 +1,5 @@
 "use client";
+import { ClipLoader } from "react-spinners";
 import useAddAttendance from "./hook";
 export default function AddAttendance() {
     const { handleSubmit, setShowModal, showModal, attendance, btnStatus } = useAddAttendance();
@@ -11,12 +12,12 @@ export default function AddAttendance() {
                         <hr className="mt-4 dark:border-gray-600" />
                         <div className="w-full h-full  mt-5 relative p-4 lg:p-0 flex items-center justify-center">
                             <div className="flex flex-row w-full h-full items-center justify-center space-x-5 lg:space-x-8">
-                                <button disabled={btnStatus} type="button" onClick={async () => {
+                                <button   type="button" onClick={async () => {
                                     handleSubmit("arrivalTime")
                                 }} className="flex flex-col space-y-3">
                                     <p className="font-semibold text-center">Arrivée</p>
                                     <div className='bg-gray-700 rounded-full p-2 hover:scale-105 ease duration-500'>
-                                        <img src="/images/attendance/play.png" className="w-12 h-12 " alt="" />
+                                        {!btnStatus ? <img src="/images/attendance/play.png" className="w-12 h-12 " alt="" /> : <ClipLoader color="#ffffff" size={16} />}
                                     </div>
                                     <p className="font-semibold text-center">{attendance.arrivalTime ? attendance.arrivalTime.slice(0, 5) : "-- - --"}</p>
                                 </button>

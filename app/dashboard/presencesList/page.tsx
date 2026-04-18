@@ -14,7 +14,7 @@ import useAddAttendance from "../attendance/hook";
 
 export default function PresencesList() {
     const { presencesListCloned, monthIndice, setMonthIndice, yearIndice, setYearIndice, monthsArray, getPresencesByMonthAndYearIndice, user, getTotalSalary, getDailySalaryAmount, getAllAttendancesOfUser, getAttendancesStats, loadingData } = PresencesListHookModal();
-    const { location, handleSubmit, attendance } = useAddAttendance()
+    const { location, handleSubmit, attendance, btnStatus, btnType, setBtnType } = useAddAttendance()
     const [showModal, setShowModal] = useState(false);
     const [page, setPage] = useState(0);             // page courante
     const limit = 5;                                 // items par page
@@ -32,7 +32,34 @@ export default function PresencesList() {
             setPage(maxPage);
 
         })()
-    }, [presencesListCloned])
+    }, [presencesListCloned]);
+
+    const btnsArray = [
+        {
+            title: "Arrivée",
+            type: "arrivalTime",
+            btnIcon: "/images/attendance/play.png",
+            hour: `${attendance.arrivalTime ? attendance.arrivalTime.slice(0, 5) : "-- - --"}`
+        },
+        {
+            title: "Pause",
+            type: "breakStartTime",
+            btnIcon: "/images/attendance/pause.png",
+            hour: `${attendance.breakStartTime ? attendance.breakStartTime.slice(0, 5) : "-- - --"}`
+        },
+        {
+            title: "Reprise",
+            type: "resumeTime",
+            btnIcon: "/images/attendance/reprise.png",
+            hour: `${attendance.resumeTime ? attendance.resumeTime.slice(0, 5) : "-- - --"}`
+        },
+        {
+            title: "Départ",
+            type: "departureTime",
+            btnIcon: "/images/attendance/stop.png",
+            hour: `${attendance.departureTime ? attendance.departureTime.slice(0, 5) : "-- - --"}`
+        }
+    ]
 
     const startPage = (start - 1) * limit;
     return (
@@ -46,42 +73,21 @@ export default function PresencesList() {
                             <hr className="mt-4 dark:border-gray-600" />
                             <div className="w-full h-full  mt-5 relative p-4 lg:p-0 flex items-center justify-center">
                                 <div className="flex flex-row w-full h-full items-center justify-center space-x-5 lg:space-x-8">
-                                    <button type="button" onClick={async () => {
-                                        handleSubmit("arrivalTime")
-                                    }} className="flex flex-col space-y-3">
-                                        <p className="font-semibold text-center">Arrivée</p>
-                                        <div className='bg-gray-700 rounded-full p-2 hover:scale-105 ease duration-500'>
-                                            <img src="/images/attendance/play.png" className="w-12 h-12 " alt="" />
-                                        </div>
-                                        <p className="font-semibold text-center">{attendance.arrivalTime ? attendance.arrivalTime.slice(0, 5) : "-- - --"}</p>
-                                    </button>
-                                    <button onClick={async () => {
-                                        handleSubmit("breakStartTime")
-                                    }} className="flex flex-col space-y-3">
-                                        <p className="font-semibold text-center">Pause</p>
-                                        <div className='bg-gray-700 rounded-full p-2 hover:scale-105 ease duration-500'>
-                                            <img src="/images/attendance/pause.png" className="w-12 h-12" alt="" />
-                                        </div>
-                                        <p className="font-semibold text-center">{attendance.breakStartTime ? attendance.breakStartTime.slice(0, 5) : "-- - --"}</p>
-                                    </button>
-                                    <button onClick={async () => {
-                                        handleSubmit("resumeTime")
-                                    }} type="button" className="flex flex-col space-y-3">
-                                        <p className="font-semibold text-center">Reprise</p>
-                                        <div className='bg-gray-700 rounded-full p-2 hover:scale-105 ease duration-500'>
-                                            <img src="/images/attendance/reprise.png" className="w-12 h-12" alt="" />
-                                        </div>
-                                        <p className="font-semibold text-center">{attendance.resumeTime ? attendance.resumeTime.slice(0, 5) : "-- - --"}</p>
-                                    </button>
-                                    <button onClick={async () => {
-                                        handleSubmit("departureTime")
-                                    }} type="button" className="flex flex-col space-y-3">
-                                        <p className="font-semibold text-center">Départ</p>
-                                        <div className='bg-gray-700 rounded-full p-2 hover:scale-105 ease duration-500'>
-                                            <img src="/images/attendance/stop.png" className="w-12 h-12" alt="" />
-                                        </div>
-                                        <p className="font-semibold text-center">{attendance.departureTime ? attendance.departureTime.slice(0, 5) : "-- - --"}</p>
-                                    </button>
+                                    {
+                                        btnsArray.map((item) => (
+                                            <button disabled={btnStatus && item.type === btnType} type="button" onClick={async () => {
+                                                handleSubmit(item.type);
+                                                setBtnType(item.type);
+                                            }} className="flex flex-col space-y-3">
+                                                <p className="font-semibold text-center">{item.title}</p>
+                                                <div className='bg-gray-700 rounded-full p-2 hover:scale-105 ease duration-500'>
+                                                    {btnStatus && item.type === btnType ? <ClipLoader color="#ffffff" size={42} /> : <img src={item.btnIcon} className="w-12 h-12 " alt="" />
+                                                    }
+                                                </div>
+                                                <p className="font-semibold text-center">{item.hour}</p>
+                                            </button>
+                                        ))
+                                    }
                                 </div>
                             </div>
 

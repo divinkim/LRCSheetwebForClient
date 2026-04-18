@@ -16,7 +16,7 @@ export default function useAddAttendance() {
     });
     const [showModal, setShowModal] = useState(true);
     const [btnStatus, setBtnStatus] = useState(false);
-
+    const [btnType, setBtnType] = useState("");
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((location) => {
             setLocation({
@@ -120,7 +120,9 @@ export default function useAddAttendance() {
                 })
             }
             else {
-                setBtnStatus(true)
+                setBtnStatus(true);
+                setBtnType(column);
+
                 const response = await providers.API.post(providers.APIUrl, "postAttendances", null, {
                     UserId: Number(UserId),
                     EnterpriseId: Number(EnterpriseId),
@@ -149,8 +151,8 @@ export default function useAddAttendance() {
     }
 
     console.log(location)
-
+    console.log(btnStatus)
     return {
-        location, handleSubmit, setShowModal, showModal, attendance, btnStatus
+        location, handleSubmit, setShowModal, showModal, attendance, btnStatus, btnType, setBtnType
     }
 }

@@ -39,7 +39,7 @@ export function Header() {
   }, [])
 
   return (
-    <header className="sticky top-0 w-screen lg:w-auto z-30 bg-gray-100 flex dark:bg-gray-900 items-center justify-between dark:border bg-white px-4 py-5 shadow-xl border-gray-800 bg-gray-900  md:px-5 2xl:px-10">
+    <header className="sticky top-0 w-screen lg:w-auto z-30  flex dark:bg-gray-900 items-center justify-between dark:border bg-white px-4 py-5 shadow-xl border-gray-800   md:px-5 2xl:px-10">
       <button
         onClick={toggleSidebar}
         className="rounded-lg border px-1.5 py-1 dark:border-stroke-dark dark:bg-[#020D1A] hover:dark:bg-[#FFFFFF1A] lg:hidden"
