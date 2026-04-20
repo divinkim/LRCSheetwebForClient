@@ -48,7 +48,7 @@ export default function SidebarHook() {
     const DB_NAME = "NotificationDB";
     const DB_VERSION = 2;
     const STORE_NAME = "notifications";
-    const {isMobile} = useSidebarContext()
+    const { isMobile } = useSidebarContext()
     function openDB(): Promise<IDBDatabase> {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -111,6 +111,7 @@ export default function SidebarHook() {
                         adminSectionIndex: remoteMessage.data?.adminSectionIndex,
                         adminPageIndex: remoteMessage.data?.adminPageIndex,
                         senderId: remoteMessage.data?.senderId,
+                        receiverId:remoteMessage.data?.receiverId,
                     };
 
                     setStoredNotificationsArray((prev) => [...prev, notif]);

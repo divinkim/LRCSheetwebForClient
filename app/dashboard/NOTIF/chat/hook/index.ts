@@ -174,12 +174,13 @@ export function useChat() {
                 EnterpriseId: userData.EnterpriseId.toString(),
                 adminSectionIndex: 0,
                 adminPageIndex: 0,
+                senderId: UserId,
                 receiverId: userData.UserId
             });
             const sendMail = await providers.API.post(providers.APIUrl, "sendMail", null, {
                 senderEmail: "grcinfos@gmail.com",
                 subject: "Notification non lue",
-                content: "Veuillez vous connecter sur le dashboard admin pour plus d'information.",
+                content: "Veuillez vous connecter sur le dashboard web pour plus d'information.",
                 emails: [userData.email]
             })
             console.log(notification);
@@ -187,7 +188,7 @@ export function useChat() {
         }
     }
 
-    console.log("le userData", userData)
+    console.log("Les notifs", storedNotificationsArray)
 
     function onSearch(value: string) {
         const searchUsers = users.filter(item => item.User.firstname.toLowerCase().includes(value.toLowerCase()) || item.User.lastname.toLowerCase().includes(value.toLowerCase()));
@@ -196,5 +197,5 @@ export function useChat() {
 
     console.log("le tableau", chatMessage)
 
-    return { users, userData, setUserData, sendChatMessage, data, setData, chatMessage, setChatMessage, getNotificationCount, removeNotificationCount, ref, usersCloned, setUsersCloned, onSearch, UserId, storedNotificationsArray}
+    return { users, userData, setUserData, sendChatMessage, data, setData, chatMessage, setChatMessage, getNotificationCount, removeNotificationCount, ref, usersCloned, setUsersCloned, onSearch, UserId, storedNotificationsArray }
 }
