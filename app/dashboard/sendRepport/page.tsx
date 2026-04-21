@@ -131,7 +131,7 @@ export default function SendRepport() {
                                                 className="hidden"
                                                 onChange={async (e) => {
                                                     const file = e.target.files?.[0];
-                                                    const result = await providers.API.post(providers.APIUrl, "sendFile", null, { file });
+                                                    const result = await providers.API.post(providers.APIUrl, "sendFiles", null, { file });
                                                     setFiles(result.filename);
                                                 }}
                                             />
