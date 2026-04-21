@@ -32,8 +32,6 @@ export default function useAddAttendance() {
         (async () => {
             if (typeof (window) === "undefined") return;
 
-
-
             const UserId = localStorage.getItem("UserId");
             const getAttendanceOfToday = await providers.API.getOne(providers.APIUrl, "getAttendancesOfToday", Number(UserId));
             setAttendance({
@@ -43,7 +41,7 @@ export default function useAddAttendance() {
                 departureTime: getAttendanceOfToday.departureTime ? getAttendanceOfToday.departureTime : ""
             })
         })()
-    }, [location])
+    }, [])
 
     const handleSubmit = async (column: string) => {
         if (typeof (window) === "undefined") return;
