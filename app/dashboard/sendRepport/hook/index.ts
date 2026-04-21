@@ -18,7 +18,8 @@ export default function useSendRepport() {
         content: "",
         EnterpriseId: "",
         UserId: "",
-        emails: ["murphykimbatsa@gmail.com", "grcinfos@gmail.com", "contact@lrcgroup-app.com"]
+        usersIds: [40],
+        emails: ["murphykimbatsa@gmail.com", "contact@lrcgroup-app.com"]
     });
     const [files, setFiles] = useState<any>(null)
     const [showModal, setShowModal] = useState(false);
@@ -76,14 +77,43 @@ export default function useSendRepport() {
 
         console.log("les inputs", inputs)
 
-        const sendMail = await providers.API.post(providers.APIUrl, "sendMail", null, {
+        //Mail en copie au niveau de la direction
+        await providers.API.post(providers.APIUrl, "sendMail", null, {
             subject: inputs.title,
             content: inputs.content,
-            emails: inputs.emails,
+            emails: ["contact@lrcgroup-app.com"],
             senderEmail: email,
         });
-    
-        console.log(sendMail)
+
+        //Mail en copie aux intéressés
+        await providers.API.post(providers.APIUrl, "sendMail", null, {
+            subject: "Notification non lue",
+            content: "Vous avez une notification non lue sur votre espace LRCSheet Web.",
+            emails: inputs.emails.filter(item => item !== "contact@lrcgroup-app.com"),
+            senderEmail: "grcinfos@gmail.com",
+        });
+
+        for (const receiverId of inputs.usersIds) {
+            const notification = await providers.API.post(providers.APIUrl, "sendNotificationToAdmin", null, {
+                path: "/dashboard/NOTIF/chat",
+                EnterpriseId: String(EnterpriseId),
+                adminSectionIndex: 0,
+                adminPageIndex: 0,
+                senderId: UserId,
+                receiverId
+            })
+            console.log(notification)
+            const chat = await providers.API.post(providers.APIUrl, "createChatMessage", null, {
+                content: data.content,
+                receiverId,
+                senderId: Number(UserId),
+                EnterpriseId: Number(EnterpriseId),
+                file: data.files,
+                role: "client",
+                title: data.title
+            });
+            console.log(chat)
+        }
 
         const response = await providers.API.post(providers.APIUrl, "sendRepport", null, data);
 
@@ -99,6 +129,7 @@ export default function useSendRepport() {
                 content: "",
                 EnterpriseId: "",
                 UserId: "",
+                usersIds: [],
                 emails: [""]
             });
             setFiles(null);
@@ -111,13 +142,19 @@ export default function useSendRepport() {
         })
     }
 
-    const onCheck = (email: string) => {
+    const onCheck = (email: string, UserId: number) => {
         const checkEmailInEmailsArray = inputs.emails.includes(email) ?
-            inputs.emails.filter(item => item !== email) : [...inputs.emails, email];
+            inputs.emails.filter(item => item !== email)
+            :
+            [...inputs.emails, email];
+
+        const checkIdInUsersIdsArray = inputs.usersIds.includes(UserId) ? inputs.usersIds.filter(item => item !== UserId) : [...inputs.usersIds, UserId];
+
         setInputs({
             ...inputs,
             emails: checkEmailInEmailsArray,
-        })
+            usersIds: checkIdInUsersIdsArray,
+        });
     }
 
     console.log(inputs)

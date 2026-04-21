@@ -26,6 +26,7 @@ type ChatMessage = {
     content: string;
     file: string;
     createdAt: string;
+    title: string | null
 };
 
 export function useChat() {
@@ -62,7 +63,7 @@ export function useChat() {
     }
 
     function removeNotificationCount(UserId: number) {
-        const deleteItem = storedNotificationsArray.filter((item: { senderId: string }) => Number(item.senderId) !== UserId);
+        const deleteItem = storedNotificationsArray.filter((item: { senderId: string, adminSectionIndex: number, adminPageIndex: number }) => Number(item.senderId) !== UserId && (item.adminPageIndex === 0 && item.adminPageIndex === 0));
         setStoredNotificationsArray(deleteItem);
         localStorage.setItem("storedNotificationsArray", JSON.stringify(deleteItem))
     }
@@ -150,6 +151,7 @@ export function useChat() {
                 content: data.content,
                 file: data.files,
                 createdAt: new Date().toISOString(),
+                title:""
             }
         ]);
 

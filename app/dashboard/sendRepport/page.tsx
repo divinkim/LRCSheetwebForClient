@@ -35,7 +35,7 @@ export default function SendRepport() {
                                             {item.photo ? <img src={`${providers.APIUrl}/images/${item.photo}`} className="w-[50px] h-[50px] rounded-full object-cover" /> : <p className="text-[40px]">🧑‍💼</p>}
                                             <p className="font-semibold">{item.lastname} {item.firstname}</p>
                                             <input type="checkbox" onChange={() => {
-                                                onCheck(item.email)
+                                                onCheck(item.email, item.id)
                                             }} checked={inputs.emails.includes(item.email)} />
                                         </div>
                                         {/* <hr /> */}
@@ -81,7 +81,7 @@ export default function SendRepport() {
                                                         {item.photo ? <img src={`${providers.APIUrl}/images/${item.photo}`} className="w-[50px] h-[50px] rounded-full object-cover" /> : <p className="text-[40px]">🧑‍💼</p>}
                                                         <p className="font-semibold">{item.lastname} {item.firstname}</p>
                                                         <input type="checkbox" onChange={() => {
-                                                            onCheck(item.email)
+                                                            onCheck(item.email, item.id)
                                                         }} checked={inputs.emails.includes(item.email)} />
                                                     </div>
                                                     {/* <hr /> */}
