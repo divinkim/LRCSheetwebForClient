@@ -182,7 +182,7 @@ export function useChat() {
             const sendMail = await providers.API.post(providers.APIUrl, "sendMail", null, {
                 senderEmail: "grcinfos@gmail.com",
                 subject: "Notification non lue",
-                content: "Veuillez vous connecter sur le dashboard web pour plus d'information.",
+                content: "Veuillez vérifier votre messagerie au niveau de votre espace web LRCSheet.",
                 emails: [userData.email]
             })
             console.log(notification);
@@ -190,7 +190,7 @@ export function useChat() {
         }
     }
 
-    console.log("Les notifs", storedNotificationsArray)
+    console.log("Les notifs", storedNotificationsArray);
 
     function onSearch(value: string) {
         const searchUsers = users.filter(item => item.User.firstname.toLowerCase().includes(value.toLowerCase()) || item.User.lastname.toLowerCase().includes(value.toLowerCase()));

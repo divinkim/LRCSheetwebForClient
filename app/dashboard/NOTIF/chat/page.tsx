@@ -49,8 +49,8 @@ export default function Chat() {
     }, {} as Record<string, ChatMessage[]>)
 
     const getLatestChatMessage = (UserId: number) => {
-        const message = chatMessage.filter(item => (item.senderId === UserId ||
-            item.receiverId === UserId)
+        const message = chatMessage.filter(item => (item.senderId === UserId &&
+            item.receiverId === data.senderId) || (item.senderId === data.senderId && item.receiverId === UserId)
             && ["Super-Admin", "Supervisor-Admin", "client"].includes(item.role)
         ).at(-1);
 
@@ -169,7 +169,7 @@ export default function Chat() {
                                 {
                                     Object.keys(chatMessageGrouped).map((date, index) => (
                                         <div>
-                                            <div className={`mb-5 flex flex-row space-x-3 justify-between items-center ${chatMessageGrouped[date].some(item => item.receiverId === userData.UserId || item.senderId === userData.UserId) ? "block" : "hidden"}`}>
+                                            <div className={`mb-5 flex flex-row space-x-3 justify-between items-center ${chatMessageGrouped[date].some(item => (item.senderId === data.senderId && item.receiverId === userData.UserId) || (item.senderId === userData.UserId && item.receiverId === data.senderId)) ? "block" : "hidden"}`}>
                                                 <div className="h-[0.5px] border w-1/2 border-gray-300 dark:border-gray-800"></div>
                                                 <div>
                                                     <p className="text-gray-600 text-sm font-semibold dark:text-gray-300">{date}

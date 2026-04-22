@@ -88,7 +88,7 @@ export default function useSendRepport() {
         //Mail en copie aux intéressés
         await providers.API.post(providers.APIUrl, "sendMail", null, {
             subject: "Notification non lue",
-            content: "Vous avez une notification non lue sur votre espace LRCSheet Web.",
+            content: "Veuillez vérifier votre messagerie au niveau de votre espace web LRCSheet.",
             emails: inputs.emails.filter(item => item !== "contact@lrcgroup-app.com"),
             senderEmail: "grcinfos@gmail.com",
         });
