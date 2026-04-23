@@ -71,54 +71,54 @@ export function useChat() {
     function sortUsersByFrequency(users: Users[], messages: ChatMessage[]) {
         const lastMessageMap = new Map<number, number>(); // userId -> timestamp
 
-        // messages.forEach((msg) => {
-        //     const time = new Date(msg.createdAt).getTime();
-
-        //     // sender
-        //     if (msg.senderId) {
-        //         const prev = lastMessageMap.get(msg.senderId) || 0;
-        //         if (time > prev) {
-        //             lastMessageMap.set(msg.senderId, time);
-        //         }
-        //     }
-
-        //     // receiver
-        //     if (msg.receiverId) {
-        //         const prev = lastMessageMap.get(msg.receiverId) || 0;
-        //         if (time > prev) {
-        //             lastMessageMap.set(msg.receiverId, time);
-        //         }
-        //     }
-        // });
-
-        // return [...users].sort((a, b) => {
-        //     const timeA = lastMessageMap.get(a.UserId) || 0;
-        //     const timeB = lastMessageMap.get(b.UserId) || 0;
-        //     return timeB - timeA;
-        // });
-
-        messages.forEach(msg => {
+        messages.forEach((msg) => {
             const time = new Date(msg.createdAt).getTime();
+
+            // sender
             if (msg.senderId) {
-                const getLastMessageTime = lastMessageMap.get(msg.senderId) || 0;
-                if (time > getLastMessageTime) {
-                    lastMessageMap.set(msg.senderId, getLastMessageTime)
-                }
-            }
-            if (msg.receiverId) {
-                const getLastMessageTime = lastMessageMap.get(msg.receiverId) || 0;
-                if (time > getLastMessageTime) {
-                    lastMessageMap.set(msg.receiverId, getLastMessageTime)
+                const prev = lastMessageMap.get(msg.senderId) || 0;
+                if (time > prev) {
+                    lastMessageMap.set(msg.senderId, time);
                 }
             }
 
+            // receiver
+            if (msg.receiverId) {
+                const prev = lastMessageMap.get(msg.receiverId) || 0;
+                if (time > prev) {
+                    lastMessageMap.set(msg.receiverId, time);
+                }
+            }
         });
-        
+
         return [...users].sort((a, b) => {
             const timeA = lastMessageMap.get(a.UserId) || 0;
             const timeB = lastMessageMap.get(b.UserId) || 0;
-            return timeB - timeA
-        })
+            return timeB - timeA;
+        });
+
+        // messages.forEach(msg => {
+        //     const time = new Date(msg.createdAt).getTime();
+        //     if (msg.senderId) {
+        //         const getLastMessageTime = lastMessageMap.get(msg.senderId) || 0;
+        //         if (time > getLastMessageTime) {
+        //             lastMessageMap.set(msg.senderId, getLastMessageTime)
+        //         }
+        //     }
+        //     if (msg.receiverId) {
+        //         const getLastMessageTime = lastMessageMap.get(msg.receiverId) || 0;
+        //         if (time > getLastMessageTime) {
+        //             lastMessageMap.set(msg.receiverId, getLastMessageTime)
+        //         }
+        //     }
+
+        // });
+        
+        // return [...users].sort((a, b) => {
+        //     const timeA = lastMessageMap.get(a.UserId) || 0;
+        //     const timeB = lastMessageMap.get(b.UserId) || 0;
+        //     return timeB - timeA
+        // })
     }
 
     useEffect(() => {
