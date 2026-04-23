@@ -193,7 +193,7 @@ export default function Chat() {
                                                                     <p className="font-semibold text-[16px] mb-3">{chat.title}</p>
                                                                 )
                                                             }
-                                                            <p>{chat.content}</p>
+                                                            <p className="whitespace-pre-line">{chat.content}</p>
                                                             {
                                                                 chat.file && (
                                                                     <div className="flex justify-end mt-4">

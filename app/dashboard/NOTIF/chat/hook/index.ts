@@ -58,7 +58,7 @@ export function useChat() {
     const [chatMessage, setChatMessage] = useState<ChatMessage[]>([]);
 
     function getNotificationCount(UserId: number) {
-        const count = storedNotificationsArray.filter((item: { senderId: string }) => Number(item.senderId) === UserId);
+        const count = storedNotificationsArray.filter((item: { senderId: string, adminSectionIndex: number, adminPageIndex: number }) => Number(item.senderId) === UserId && (item.adminSectionIndex === 0 && item.adminPageIndex === 0));
         return count.length;
     }
 
@@ -69,19 +69,55 @@ export function useChat() {
     }
 
     function sortUsersByFrequency(users: Users[], messages: ChatMessage[]) {
-        const map = new Map();
-        messages.forEach((msg) => {
+        const lastMessageMap = new Map<number, number>(); // userId -> timestamp
+
+        // messages.forEach((msg) => {
+        //     const time = new Date(msg.createdAt).getTime();
+
+        //     // sender
+        //     if (msg.senderId) {
+        //         const prev = lastMessageMap.get(msg.senderId) || 0;
+        //         if (time > prev) {
+        //             lastMessageMap.set(msg.senderId, time);
+        //         }
+        //     }
+
+        //     // receiver
+        //     if (msg.receiverId) {
+        //         const prev = lastMessageMap.get(msg.receiverId) || 0;
+        //         if (time > prev) {
+        //             lastMessageMap.set(msg.receiverId, time);
+        //         }
+        //     }
+        // });
+
+        // return [...users].sort((a, b) => {
+        //     const timeA = lastMessageMap.get(a.UserId) || 0;
+        //     const timeB = lastMessageMap.get(b.UserId) || 0;
+        //     return timeB - timeA;
+        // });
+
+        messages.forEach(msg => {
+            const time = new Date(msg.createdAt).getTime();
             if (msg.senderId) {
-                map.set(msg.senderId, (map.get(msg.senderId) || 0) + 1);
+                const getLastMessageTime = lastMessageMap.get(msg.senderId) || 0;
+                if (time > getLastMessageTime) {
+                    lastMessageMap.set(msg.senderId, getLastMessageTime)
+                }
             }
             if (msg.receiverId) {
-                map.set(msg.receiverId, (map.get(msg.receiverId) || 0) + 1);
+                const getLastMessageTime = lastMessageMap.get(msg.receiverId) || 0;
+                if (time > getLastMessageTime) {
+                    lastMessageMap.set(msg.receiverId, getLastMessageTime)
+                }
             }
+
         });
+        
         return [...users].sort((a, b) => {
-            const countA = map.get(a.UserId) || 0;
-            const countB = map.get(b.UserId) || 0;
-            return countB - countA
+            const timeA = lastMessageMap.get(a.UserId) || 0;
+            const timeB = lastMessageMap.get(b.UserId) || 0;
+            return timeB - timeA
         })
     }
 
@@ -151,7 +187,7 @@ export function useChat() {
                 content: data.content,
                 file: data.files,
                 createdAt: new Date().toISOString(),
-                title:""
+                title: ""
             }
         ]);
 
@@ -171,7 +207,7 @@ export function useChat() {
         })
 
         if (response) {
-            const notification = await providers.API.post(providers.APIUrl, "sendNotificationToAdmin", null, {
+            const notification = await providers.API.post(providers.APIUrl, "sendNotificationToWebUser", null, {
                 path: "/dashboard/NOTIF/chat",
                 EnterpriseId: userData.EnterpriseId.toString(),
                 adminSectionIndex: 0,
@@ -179,10 +215,19 @@ export function useChat() {
                 senderId: UserId,
                 receiverId: userData.UserId
             });
+            if (userData.UserId === 1) {
+                const mail = await providers.API.post(providers.APIUrl, "sendMail", null, {
+                    senderEmail: "grcinfos@gmail.com",
+                    subject: "Notification entrante!",
+                    content: "Veuillez vérifier votre messagerie au niveau de l'espace web LRCSheet.",
+                    emails: ["grcinfos@gmail.com"]
+                });
+                console.log(mail)
+            }
             const sendMail = await providers.API.post(providers.APIUrl, "sendMail", null, {
                 senderEmail: "grcinfos@gmail.com",
-                subject: "Notification non lue",
-                content: "Veuillez vérifier votre messagerie au niveau de votre espace web LRCSheet.",
+                subject: "Notification entrante!",
+                content: "Veuillez vérifier votre messagerie au niveau de l'espace web LRCSheet.",
                 emails: [userData.email]
             })
             console.log(notification);
