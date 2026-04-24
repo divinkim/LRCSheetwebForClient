@@ -88,7 +88,7 @@ export default function useSendRepport() {
         //Mail en copie aux intéressés
         await providers.API.post(providers.APIUrl, "sendMail", null, {
             subject: "Notification entrante!",
-            content: "Veuillez vérifier votre messagerie au niveau de l'espace web LRCSheet.",
+            content: "Veuillez consoluter votre messagerie au niveau de l'espace web LRCSheet.",
             emails: inputs.emails.filter(item => item !== "contact@lrcgroup-app.com"),
             senderEmail: "grcinfos@gmail.com",
         });

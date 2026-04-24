@@ -57,17 +57,17 @@ export function useChat() {
 
     const [chatMessage, setChatMessage] = useState<ChatMessage[]>([]);
 
-    function getNotificationCount(UserId: number) {
-        const count = storedNotificationsArray.filter((item: { senderId: string }) => Number(item.senderId) === UserId);
-        return count.length;
-    }
-
     function removeNotificationCount(UserId: number) {
-        const deleteItem = storedNotificationsArray.filter((item: { senderId: string, adminSectionIndex: number, adminPageIndex: number }) => Number(item.senderId) !== UserId && (Number(item.adminPageIndex) === 0 && Number(item.adminSectionIndex) === 0));
+        const deleteItem = storedNotificationsArray.filter((item: { senderId: string, adminSectionIndex: string, adminPageIndex: string }) => Number(item.senderId) !== UserId && (Number(item.adminPageIndex) === 0 && Number(item.adminSectionIndex) === 0));
         setStoredNotificationsArray(deleteItem);
         localStorage.setItem("storedNotificationsArray", JSON.stringify(deleteItem))
     }
 
+    function getNotificationCount(UserId: number) {
+        const count = storedNotificationsArray.filter((item: { senderId: string }) => Number(item.senderId) === UserId);
+        return count.length;
+    }
+    
     function sortUsersByFrequency(users: Users[], messages: ChatMessage[]) {
         const lastMessageMap = new Map<number, number>(); // userId -> timestamp
 
@@ -113,7 +113,7 @@ export function useChat() {
         //     }
 
         // });
-        
+
         // return [...users].sort((a, b) => {
         //     const timeA = lastMessageMap.get(a.UserId) || 0;
         //     const timeB = lastMessageMap.get(b.UserId) || 0;
