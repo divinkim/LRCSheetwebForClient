@@ -58,12 +58,12 @@ export function useChat() {
     const [chatMessage, setChatMessage] = useState<ChatMessage[]>([]);
 
     function getNotificationCount(UserId: number) {
-        const count = storedNotificationsArray.filter((item: { senderId: string, adminSectionIndex: number, adminPageIndex: number }) => Number(item.senderId) === UserId && (item.adminSectionIndex === 0 && item.adminPageIndex === 0));
+        const count = storedNotificationsArray.filter((item: { senderId: string }) => Number(item.senderId) === UserId);
         return count.length;
     }
 
     function removeNotificationCount(UserId: number) {
-        const deleteItem = storedNotificationsArray.filter((item: { senderId: string, adminSectionIndex: number, adminPageIndex: number }) => Number(item.senderId) !== UserId && (item.adminPageIndex === 0 && item.adminPageIndex === 0));
+        const deleteItem = storedNotificationsArray.filter((item: { senderId: string, adminSectionIndex: number, adminPageIndex: number }) => Number(item.senderId) !== UserId && (Number(item.adminPageIndex) === 0 && Number(item.adminSectionIndex) === 0));
         setStoredNotificationsArray(deleteItem);
         localStorage.setItem("storedNotificationsArray", JSON.stringify(deleteItem))
     }
@@ -217,17 +217,17 @@ export function useChat() {
             });
             if (userData.UserId === 1) {
                 const mail = await providers.API.post(providers.APIUrl, "sendMail", null, {
-                    senderEmail: "grcinfos@gmail.com",
+                    senderEmail: "lrcsheet@gmail.com",
                     subject: "Notification entrante!",
-                    content: "Veuillez vérifier votre messagerie au niveau de l'espace web LRCSheet.",
+                    content: "Veuillez consulter votre messagerie au niveau de l'espace web LRCSheet.",
                     emails: ["grcinfos@gmail.com"]
                 });
                 console.log(mail)
             }
             const sendMail = await providers.API.post(providers.APIUrl, "sendMail", null, {
-                senderEmail: "grcinfos@gmail.com",
+                senderEmail: "lrcsheet@gmail.com",
                 subject: "Notification entrante!",
-                content: "Veuillez vérifier votre messagerie au niveau de l'espace web LRCSheet.",
+                content: "Veuillez consulter votre messagerie au niveau de l'espace web LRCSheet.",
                 emails: [userData.email]
             })
             console.log(notification);
