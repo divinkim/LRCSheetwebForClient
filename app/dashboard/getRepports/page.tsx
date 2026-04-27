@@ -9,7 +9,7 @@ export default function Repports() {
     const { itemIndex, setItemIndex, isVisible, setIsVisible, itemIndexOnWriting, setItemIndexOnWriting, setAdminResponse, setMonthIndice, monthIndice, repportsArrayCloned, EnterpriseId, filterRepportsByUsersNames, navigateBetweenMonths, adminResponse, monthsOfYear, RepportsArray, sendAdminResponse, isLoading, setIsLoading, loadingData, ComponentModal } = useRepportsList();
 
     return (
-        <div className="bg-gray-100 dark:bg-transparent">
+        <div className="bg-white dark:bg-transparent">
             <div className="flex">
                 <div className="mx-4 dark:text-gray-300 text-gray-700 mt-6 mb-4 w-full">
                     <div className="flex justify-between font-semibold mb-4 items-center">
@@ -96,19 +96,19 @@ export default function Repports() {
                                         </div>
                                     </div>
                                 ))
-                                : repportsArrayCloned.length === 0 && loadingData ?
-                                    <div className="h-[400px] relative -top-10  flex items-center justify-center">
-                                        <ClipLoader color="#2563eb" />
-                                    </div>
-                                    :
-                                    repportsArrayCloned.length === 0 && !loadingData ?
-                                        <div className="h-[400px] relative -top-10  flex items-center justify-center">
-                                            <div>
-                                                <img className="w-[200px] h-[200px] mx-auto" src="/images/svg/notfoundsvg.webp" />
-                                                <p className="text-gray-600 font-bold text-center">Aucune donnée trouvée pour cette page</p>
-                                            </div>
+
+                                :
+
+                                <div className="h-[500px] relative   flex items-center justify-center">
+                                    {
+                                        loadingData ? <ClipLoader size={30} color="#1d4ed8" /> : <div>
+                                            <img className="w-[200px] h-[200px] mx-auto" src="/images/svg/notfoundsvg.webp" />
+                                            <p className="text-gray-600 font-bold text-center">Aucune donnée trouvée pour cette page</p>
                                         </div>
-                                        : <div></div>
+                                    }
+
+                                </div>
+
                         }
                     </div>
                 </div>

@@ -54,11 +54,17 @@ export function useChat() {
         files: "",
     })
 
+    function scrollDown() {
+        if (ref.current) {
+            ref.current.scrollIntoView({ behavior: "smooth" })
+        }
+    }
 
     const [chatMessage, setChatMessage] = useState<ChatMessage[]>([]);
 
     function removeNotificationCount(UserId: number) {
         const deleteItem = storedNotificationsArray.filter((item: { senderId: string, adminSectionIndex: string, adminPageIndex: string }) => Number(item.senderId) !== UserId && (Number(item.adminPageIndex) === 0 && Number(item.adminSectionIndex) === 0));
+        console.log("le nouveau tableau de notif", deleteItem)
         setStoredNotificationsArray(deleteItem);
         localStorage.setItem("storedNotificationsArray", JSON.stringify(deleteItem))
     }
@@ -67,7 +73,7 @@ export function useChat() {
         const count = storedNotificationsArray.filter((item: { senderId: string }) => Number(item.senderId) === UserId);
         return count.length;
     }
-    
+
     function sortUsersByFrequency(users: Users[], messages: ChatMessage[]) {
         const lastMessageMap = new Map<number, number>(); // userId -> timestamp
 
@@ -124,14 +130,11 @@ export function useChat() {
     useEffect(() => {
         (async () => {
             if (typeof (window) === "undefined") return;
-            if (ref.current) {
-                ref.current.scrollIntoView({ behavior: "smooth" })
-            }
             const EnterpriseId = localStorage.getItem("EnterpriseId");
             const UserId = localStorage.getItem("UserId");
             const usersFcmTokens = await providers.API.getAll(providers.APIUrl, "getFcmTokens", null);
             const usersFcmTokensByEnterpriseId = usersFcmTokens.filter((item: { UserEnterpriseId: number }) => item.UserEnterpriseId === Number(EnterpriseId));
-
+            scrollDown()
             const chatMessage = await providers.API.getAll(providers.APIUrl, "getChatMessage", null);
 
             const newUsersArray = sortUsersByFrequency(usersFcmTokensByEnterpriseId, chatMessage);
@@ -149,20 +152,14 @@ export function useChat() {
 
     useEffect(() => {
         (() => {
-            if (ref.current) {
-                ref.current.scrollIntoView({ behavior: "smooth" })
-            }
+            scrollDown()
             const newUsersArray = sortUsersByFrequency(users, chatMessage);
             setUsersCloned(newUsersArray)
         })();
     }, [chatMessage])
 
     useEffect(() => {
-        (() => {
-            if (ref.current) {
-                ref.current.scrollIntoView({ behavior: "smooth" })
-            }
-        })()
+       scrollDown()
     }, [userData.fcmToken])
 
     useEffect(() => {
@@ -213,6 +210,7 @@ export function useChat() {
                 adminSectionIndex: 0,
                 adminPageIndex: 0,
                 senderId: UserId,
+                messagingType: "notification",//niveau app mobile
                 receiverId: userData.UserId
             });
             if (userData.UserId === 1) {
@@ -222,7 +220,8 @@ export function useChat() {
                     content: "Veuillez consulter votre messagerie au niveau de l'espace web LRCSheet.",
                     emails: ["grcinfos@gmail.com"]
                 });
-                console.log(mail)
+                console.log(mail);
+                return;
             }
             const sendMail = await providers.API.post(providers.APIUrl, "sendMail", null, {
                 senderEmail: "lrcsheet@gmail.com",

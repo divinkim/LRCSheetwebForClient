@@ -6,10 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { providers } from "@/index";
 
 export default function SendRepport() {
-    const { isLoading, handleSubmit, inputs, setInputs, showModal, setShowModal, users, filterUsersByFullName, onCheck, files, setFiles } = useSendRepport()
+    const { isLoading, handleSubmit, inputs, setInputs, showModal, setShowModal, users, filterUsersByFullName, onCheck, files, setFiles, UserId } = useSendRepport()
     return (
         <div className="bg-gray-100  dark:bg-transparent w-full">
-            <div className={showModal ? "fixed w-full h-screen overflow-x-hidden bg-black/70 z-50 flex items-center justify-center" : "hidden"}>
+            <div className={showModal ? "fixed top-0 w-full h-screen overflow-x-hidden bg-black/70 z-50 flex items-center justify-center" : "hidden"}>
                 <div>
                     <button onClick={() => {
                         setShowModal(false)
@@ -17,7 +17,7 @@ export default function SendRepport() {
                         <FontAwesomeIcon icon={faTimes} className="text-gray-300 text-[20px]" />
                     </button>
                 </div>
-                <div className="bg-white dark:bg-gray-900 shadow-xl dark:border-gray-600 border  rounded-lg w-[90%] relative  top-10 p-5 lg:w-[30%] h-[500px]">
+                <div className="bg-white dark:bg-gray-900 shadow-xl dark:border-gray-600 border  rounded-lg w-[90%] relative  p-5 lg:w-[30%] h-[500px]">
                     <div className="relative">
                         <input onChange={(e) => {
                             filterUsersByFullName(e.target.value)
@@ -28,20 +28,23 @@ export default function SendRepport() {
 
                     <div className="flex  mt-5 overflow-auto  h-[400px] flex-col">
                         {
-                            users.map((item, index) => (
-                                item.id !== 66 && (
-                                    <div key={index} className="hover:cursor-pointer hover:duration-500 border-b border-gray-300 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">
-                                        <div className="flex p-3 border-gray-400 items-center space-x-4">
-                                            {item.photo ? <img src={`${providers.APIUrl}/images/${item.photo}`} className="w-[50px] h-[50px] rounded-full object-cover" /> : <p className="text-[40px]">🧑‍💼</p>}
-                                            <p className="font-semibold">{item.lastname} {item.firstname}</p>
-                                            <input type="checkbox" onChange={() => {
-                                                onCheck(item.email, item.id)
-                                            }} checked={inputs.emails.includes(item.email)} />
+                            users.length > 0 ?
+                                users.map((item, index) => (
+                                    item.id !== 66 && (
+                                        <div key={index} className={`hover:cursor-pointer hover:duration-500 border-b border-gray-300 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 ${item.id === UserId ? "hidden" : ""}`}>
+                                            <div className="flex p-3 border-gray-400 items-center space-x-4">
+                                                {<img src={item.photo ? `${providers.APIUrl}/images/${item.photo}` : "/images/clientProfile.png"} className="w-[50px] h-[50px] rounded-full object-cover" />}
+                                                <p className="font-semibold">{item.lastname} {item.firstname}</p>
+                                                <input type="checkbox" onChange={() => {
+                                                    onCheck(item.email, item.id)
+                                                }} checked={inputs.emails.includes(item.email)} />
+                                            </div>
+                                            {/* <hr /> */}
                                         </div>
-                                        {/* <hr /> */}
-                                    </div>
-                                )
-                            ))
+                                    )
+                                )) : <div className="w-full h-full flex items-center justify-center">
+                                    <ClipLoader size={30} color='#2563eb' />
+                                </div>
                         }
                     </div>
                 </div>
@@ -74,21 +77,24 @@ export default function SendRepport() {
                                 </div>
                                 <div className="">
                                     {
-                                        users.map((item, index) => (
-                                            item.id !== 66 && (
-                                                <div key={index} className="hover:cursor-pointer hover:duration-500 border-b border-gray-300 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">
-                                                    <div className="flex p-3 border-gray-400 items-center space-x-4">
-                                                        {item.photo ? <img src={`${providers.APIUrl}/images/${item.photo}`} className="w-[50px] h-[50px] rounded-full object-cover" /> : <p className="text-[40px]">🧑‍💼</p>}
-                                                        <p className="font-semibold">{item.lastname} {item.firstname}</p>
-                                                        <input type="checkbox" onChange={() => {
-                                                            onCheck(item.email, item.id)
-                                                        }} checked={inputs.emails.includes(item.email)} />
+                                        users.length > 0 ?
+                                            users.map((item, index) => (
+                                                item.id !== 66 && (
+                                                    <div key={index} className={`hover:cursor-pointer hover:duration-500 border-b border-gray-300 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 ${item.id === UserId ? "hidden" : ""}`}>
+                                                        <div className="flex p-3 border-gray-400 items-center space-x-4">
+                                                            {<img src={item.photo ? `${providers.APIUrl}/images/${item.photo}` : "/images/clientProfile.png"} className="w-[50px] h-[50px] rounded-full object-cover" />}
+                                                            <p className="font-semibold">{item.lastname} {item.firstname}</p>
+                                                            <input type="checkbox" onChange={() => {
+                                                                onCheck(item.email, item.id)
+                                                            }} checked={inputs.emails.includes(item.email)} />
+                                                        </div>
+                                                        {/* <hr /> */}
                                                     </div>
-                                                    {/* <hr /> */}
-                                                </div>
-                                            )
+                                                )
 
-                                        ))
+                                            )) : <div className="w-full h-[400px] flex items-center justify-center">
+                                                <ClipLoader size={30} color='#2563eb' />
+                                            </div>
                                     }
                                 </div>
                             </div>

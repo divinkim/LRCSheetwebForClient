@@ -93,7 +93,7 @@ export default function useHome() {
 
       // if (!token) return window.location.href = "/";
       if (!latitudeOfEnterprise || !longitudeOfEnterprise) return window.location.href = "/";
-      setIsLoading(false);
+
 
       const getAllPresencesOfUser = await providers.API.getAll(providers.APIUrl, "getAttendances", Number(UserId));
 
@@ -153,7 +153,15 @@ export default function useHome() {
       const repportsCount = getRepportsCountOfUserByCurrentMonth(Number(UserId));
       setRepportsCount(repportsCount)
     })()
-  }, [getAllRepportsOfUser])
+  }, [getAllRepportsOfUser]);
+
+  useEffect(() => {
+    (() => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1500)
+    })()
+  }, [repportsCount]);
 
   const cardComponentArray = [
     {

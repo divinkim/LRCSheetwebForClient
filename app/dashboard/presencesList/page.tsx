@@ -63,7 +63,7 @@ export default function PresencesList() {
 
     const startPage = (start - 1) * limit;
     return (
-        <div>
+        <div className="bg-white">
             {/* <AddAttendance /> */}
             <div className={showModal ? "fixed w-screen h-screen bg-black/70 z-40" : "hidden"}>
                 <div className='flex items-center  justify-center w-full h-full text-gray-700 dark:text-gray-300'>
@@ -102,7 +102,7 @@ export default function PresencesList() {
                 </div>
             </div>
             <div className="flex">
-                <div className=' bg-gray-100 dark:bg-transparent w-full text-gray-700 dark:text-gray-300'>
+                <div className='  dark:bg-transparent w-full text-gray-700 dark:text-gray-300'>
                     <div className="hidden lg:block pt-5">
                         <div className="relative">
                             <div className={showAddPresenceModal || showUpdatePresenceModal ? "absolute z-20 right-10 top-10" : "hidden"}>

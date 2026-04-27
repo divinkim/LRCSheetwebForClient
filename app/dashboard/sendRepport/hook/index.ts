@@ -88,17 +88,18 @@ export default function useSendRepport() {
         //Mail en copie aux intéressés
         await providers.API.post(providers.APIUrl, "sendMail", null, {
             subject: "Notification entrante!",
-            content: "Veuillez consoluter votre messagerie au niveau de l'espace web LRCSheet.",
+            content: "Veuillez consulter votre messagerie au niveau de l'espace web LRCSheet.",
             emails: inputs.emails.filter(item => item !== "contact@lrcgroup-app.com"),
-            senderEmail: "grcinfos@gmail.com",
+            senderEmail: "lrcsheet@gmail.com",
         });
 
         for (const receiverId of inputs.usersIds) {
-            const notification = await providers.API.post(providers.APIUrl, "sendNotificationToAdmin", null, {
+            const notification = await providers.API.post(providers.APIUrl, "sendNotificationToWebUser", null, {
                 path: "/dashboard/NOTIF/chat",
-                EnterpriseId: String(EnterpriseId),
+                EnterpriseId: Number(EnterpriseId),
                 adminSectionIndex: 0,
                 adminPageIndex: 0,
+                messingType:"notification",//niveau app mobile
                 senderId: UserId,
                 receiverId
             })
@@ -114,7 +115,7 @@ export default function useSendRepport() {
             });
             console.log(chat)
         }
-
+        
         const response = await providers.API.post(providers.APIUrl, "sendRepport", null, data);
 
         const status = response.status;
@@ -166,6 +167,6 @@ export default function useSendRepport() {
 
 
     return {
-        isLoading, setIsLoading, inputs, handleSubmit, setInputs, showModal, setShowModal, users, onCheck, filterUsersByFullName, files, setFiles
+        isLoading, setIsLoading, inputs, handleSubmit, setInputs, showModal, setShowModal, users, onCheck, filterUsersByFullName, files, setFiles, UserId
     }
 }

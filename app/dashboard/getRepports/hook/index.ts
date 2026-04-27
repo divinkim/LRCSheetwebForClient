@@ -30,7 +30,7 @@ export function useRepportsList() {
     const [RepportsArray, setRepportsArray] = useState<RepportsValue[]>([]);
     const [repportsArrayCloned, setRepportsArrayCloned] = useState<RepportsValue[]>([]);
     const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [UserId, setUserId] = useState(0);
     const [loadingData, setloadingData] = useState(true)
 
@@ -39,8 +39,8 @@ export function useRepportsList() {
             if (typeof (window) === "undefined") return;
             let EnterpriseId = localStorage.getItem("EnterpriseId");
             let UserId = localStorage.getItem("UserId");
-            if(ComponentModal)
-            setRepportsArray(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
+            if (ComponentModal)
+                setRepportsArray(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
             setEnterpriseId(EnterpriseId);
             setUserId(Number(UserId))
         })()
@@ -50,19 +50,15 @@ export function useRepportsList() {
 
     useEffect(() => {
         (() => {
-            try {
-                if (typeof (window) === "undefined") return;
-                setloadingData(true);
-                const UserId = localStorage.getItem("UserId")
-                const getRepportsByUserId = RepportsArray.filter(repport => repport.UserId === Number(UserId));
-                setRepportsArrayCloned(getRepportsByUserId);
-            } catch (error) {
-
-            } finally {
-                setloadingData(false);
-            }
+            if (typeof (window) === "undefined") return;
+            const UserId = localStorage.getItem("UserId")
+            const getRepportsByUserId = RepportsArray.filter(repport => repport.UserId === Number(UserId));
+            setRepportsArrayCloned(getRepportsByUserId);
+            setTimeout(() => {
+                setloadingData(false)
+            }, 2000)
         })()
-    }, [RepportsArray])
+    }, [RepportsArray.length > 0])
 
     const monthsOfYear = [
         "Janvier",

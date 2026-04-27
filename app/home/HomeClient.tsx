@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import useHome from "./hook";
 
 import useAddAttendance from "../dashboard/attendance/hook";
+import { ClipLoader } from "react-spinners";
 
 export default function HomeClient() {
     const { isLoading, cardComponentArray, FontAwesomeIcon, getAllPresencesOfUser } = useHome();
@@ -96,8 +97,8 @@ export default function HomeClient() {
     return (
         <div>
             {/* <Loader isLoading={isLoading} /> */}
-            <div className={isLoading ? "hidden" : "block"}>
-                <div className="flex">
+            {
+                !isLoading ? <div className="flex">
                     <div className="mx-auto w-full h-auto p-4">
 
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 grid-cols-1 ">
@@ -142,8 +143,12 @@ export default function HomeClient() {
                         </div>
 
                     </div>
+                </div> : <div className="w-full h-[600px] flex items-center justify-center">
+                    <ClipLoader color="#1d4ed8" size={30} />
                 </div>
-            </div>
+            }
+
+
         </div>
     );
 }

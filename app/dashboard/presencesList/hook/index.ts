@@ -45,14 +45,18 @@ export function PresencesListHookModal() {
     const [totalSalary, setTotalSalary] = useState("");
 
     async function getAllAttendancesOfUser() {
-        setIsLoadingData(true)
         const UserId = localStorage.getItem("UserId");
         const presencesList = await providers.API.getAll(providers.APIUrl, "getAttendances", Number(UserId));
         setPresencesList(presencesList);
-        setIsLoadingData(false)
     }
 
-    const [loadingData, setIsLoadingData] = useState(false);
+    const [loadingData, setIsLoadingData] = useState(true);
+
+    useEffect(() => {
+        (() => {
+            setIsLoadingData(false);    
+        })()
+    }, [presencesList.length > 0])
 
     useEffect(() => {
         (async () => {
