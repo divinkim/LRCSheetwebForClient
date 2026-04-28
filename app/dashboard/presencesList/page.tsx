@@ -63,7 +63,7 @@ export default function PresencesList() {
 
     const startPage = (start - 1) * limit;
     return (
-        <div className="bg-white">
+        <div className="">
             {/* <AddAttendance /> */}
             <div className={showModal ? "fixed w-screen h-screen bg-black/70 z-40" : "hidden"}>
                 <div className='flex items-center  justify-center w-full h-full text-gray-700 dark:text-gray-300'>
@@ -102,7 +102,7 @@ export default function PresencesList() {
                 </div>
             </div>
             <div className="flex">
-                <div className='  dark:bg-transparent w-full text-gray-700 dark:text-gray-300'>
+                <div className='bg-white dark:bg-transparent w-full text-gray-700 dark:text-gray-300'>
                     <div className="hidden lg:block pt-5">
                         <div className="relative">
                             <div className={showAddPresenceModal || showUpdatePresenceModal ? "absolute z-20 right-10 top-10" : "hidden"}>
@@ -311,7 +311,7 @@ export default function PresencesList() {
                             {
                                 presencesListCloned.length > 0 && !loadingData ?
                                     presencesListCloned.map((item) => (
-                                        <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 w-full shadow-lg flex flex-col space-y-4 p-4 rounded-md">
+                                        <div className="bg-white border border-gray-300 dark:bg-gray-800 dark:border dark:border-gray-800 w-full shadow-lg flex flex-col space-y-4 p-4 rounded-md">
                                             <p className="font-semibold">Arrivée: {item.arrivalTime !== "00:00:00" ? item.arrivalTime?.slice(0, 5) : "-- --"}</p>
                                             <p className="font-semibold">Pause: {item.breakStartTime ? item.breakStartTime?.slice(0, 5) : "-- --"}</p>
                                             <p className="font-semibold">Reprise: {item.resumeTime ? item.resumeTime?.slice(0, 5) : "-- --"}</p>

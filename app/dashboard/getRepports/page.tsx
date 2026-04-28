@@ -38,7 +38,7 @@ export default function Repports() {
                         {
                             repportsArrayCloned.length > 0 && !loadingData ?
                                 repportsArrayCloned.filter(repport => repport.monthIndice === monthIndice).slice().reverse().map((repport, index) => (
-                                    <div key={index} className="w-full h-auto bg-white shadow-xl mb-6 dark:shadow-none dark:border dark:border-gray-400 p-4 rounded-xl dark:bg-transparent">
+                                    <div key={index} className="w-full h-auto bg-white border border-gray-300 shadow-xl mb-6 dark:shadow-none dark:border dark:border-gray-800 p-4 rounded-xl dark:bg-transparent">
                                         <div className="flex justify-start items-center lg:justify-between flex-col lg:flex-row space-y-5 lg:space-y-0">
                                             <div className="flex items-center space-x-4">
                                                 {

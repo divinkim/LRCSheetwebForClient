@@ -233,7 +233,7 @@ export default function SidebarHook() {
                 {
                     index: 0,
                     title: "Profil",
-                    href: "/home",
+                    href: "/dashboard/getUserProfile",
                     icon: faUser
                 },
             ]
