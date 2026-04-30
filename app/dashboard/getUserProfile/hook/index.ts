@@ -128,7 +128,7 @@ export default function useUserProfile() {
 
             const getUserId = localStorage.getItem("UserId");
 
-            const getUser = await providers.API.getOne(providers.APIUrl, "getUser", Number(getUserId));
+            const getUser = await providers.API.getOne("https://vps118934.serveur-vps.net:4001", "getUser", Number(getUserId));
 
             console.log("l'utilisateur", getUser);
             

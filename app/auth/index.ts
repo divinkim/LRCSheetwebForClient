@@ -70,12 +70,16 @@ export default function useAuth() {
             return;
         }
 
-        const response = await providers.API.post(providers.APIUrl, "login", null, {
+        const response = await providers.API.post("https://vps118934.serveur-vps.net:4001", "login", null, {
             email, password
         });
 
         if (!response.status) {
-            providers.alertMessage(response.status, response.title, response.message, "/");
+            providers.alertMessage(response.status,
+                response.title,
+                response.message,
+                null
+            );
             return;
         }
 
