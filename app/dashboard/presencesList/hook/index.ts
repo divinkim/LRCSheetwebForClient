@@ -46,7 +46,7 @@ export function PresencesListHookModal() {
 
     async function getAllAttendancesOfUser() {
         const UserId = localStorage.getItem("UserId");
-        const presencesList = await providers.API.getAll(providers.APIUrl, "getAttendances", Number(UserId));
+        const presencesList = await providers.API.getAll("https://vps118934.serveur-vps.net:4001", "getAttendances", Number(UserId));
         setPresencesList(presencesList);
     }
 
