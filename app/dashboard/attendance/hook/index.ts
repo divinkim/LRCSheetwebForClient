@@ -33,7 +33,7 @@ export default function useAddAttendance() {
             if (typeof (window) === "undefined") return;
 
             const UserId = localStorage.getItem("UserId");
-            const getAttendanceOfToday = await providers.API.getOne(providers.APIUrl, "getAttendancesOfToday", Number(UserId));
+            const getAttendanceOfToday = await providers.API.getOne("https://vps118934.serveur-vps.net:4001", "getAttendancesOfToday", Number(UserId));
             setAttendance({
                 arrivalTime: getAttendanceOfToday.arrivalTime ? getAttendanceOfToday.arrivalTime : "",
                 breakStartTime: getAttendanceOfToday.breakStartTime ? getAttendanceOfToday.breakStartTime : "",
@@ -43,7 +43,7 @@ export default function useAddAttendance() {
         })()
     }, [])
 
-    const handleSubmit = async (column: string) => {
+    const handleSubmit = async (field: string) => {
         if (typeof (window) === "undefined") return;
 
         const UserId = localStorage.getItem("UserId");
@@ -61,56 +61,56 @@ export default function useAddAttendance() {
                 text: "Vous devrez être dans le périmètre de votre entreprise, afin d'enregistrer vos horaires"
             })
         } else {
-            if (hour > "12:00" && column === "arrivalTime") {
+            if (hour > "12:00" && field === "arrivalTime") {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
                     text: "Vous ne pouvez plus enregistrer votre heure d'arrivée part rapport à votre planning horaire."
                 })
             }
-            else if (column === "arrivalTime" && attendance.arrivalTime) {
+            else if (field === "arrivalTime" && attendance.arrivalTime) {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
                     text: "Horraire d'arrivée déjà enregistrée"
                 })
             }
-            else if ((hour < "12:00" || hour > "14:00") && column === "breakStartTime") {
+            else if ((hour < "12:00" || hour > "14:00") && field === "breakStartTime") {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
                     text: "Vous ne pouvez pas enregistrer votre heure de pause part rapport à votre planning horaire."
                 })
             }
-            else if (column === "breakStartTime" && attendance.breakStartTime) {
+            else if (field === "breakStartTime" && attendance.breakStartTime) {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
                     text: "Horraire d'arrivée déjà enregistrée"
                 })
             }
-            else if ((hour < "13:30" || hour > "16:00") && column === "resumeTime") {
+            else if ((hour < "13:30" || hour > "16:00") && field === "resumeTime") {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
                     text: "Vous ne pouvez pas enregistrer votre heure de pause part rapport à votre planning horaire."
                 })
             }
-            else if (column === "resumeTime" && attendance.resumeTime) {
+            else if (field === "resumeTime" && attendance.resumeTime) {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
                     text: "Horraire d'arrivée déjà enregistrée"
                 })
             }
-            else if ((hour < "12:30") && column === "departureTime") {
+            else if ((hour < "12:30") && field === "departureTime") {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
                     text: "Vous ne pouvez pas enregistrer votre heure de départ part rapport à votre planning horaire."
                 })
             }
-            else if (column === "departureTime" && attendance.departureTime) {
+            else if (field === "departureTime" && attendance.departureTime) {
                 return Swal.fire({
                     icon: "warning",
                     title: "Attention!",
@@ -119,14 +119,14 @@ export default function useAddAttendance() {
             }
             else {
                 setBtnStatus(true);
-                setBtnType(column);
+                setBtnType(field);
 
-                const response = await providers.API.post(providers.APIUrl, "postAttendances", null, {
+                const response = await providers.API.post("https://vps118934.serveur-vps.net:4001", "postAttendances", null, {
                     UserId: Number(UserId),
                     EnterpriseId: Number(EnterpriseId),
                     SalaryId: Number(SalaryId),
                     PlanningId: Number(PlanningId),
-                    column
+                    field
                 });
 
                 setBtnStatus(false);
@@ -134,7 +134,7 @@ export default function useAddAttendance() {
                 if (response.status) {
                     setAttendance({
                         ...attendance,
-                        [column]: hour
+                        [field]: hour
                     });
                 }
 
