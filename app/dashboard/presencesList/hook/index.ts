@@ -69,7 +69,7 @@ export function PresencesListHookModal() {
             // if (!fcmToken) return window.location.href = "/";
             if (!EnterpriseId) return window.location.href = "/dashboard/home";
 
-            const fcmTokenResponse = await providers.API.post(providers.APIUrl, "sendFcmToken", null, {
+            const fcmTokenResponse = await providers.API.post("https://vps118934.serveur-vps.net:4000", "sendFcmToken", null, {
                 id: Number(UserId),
                 UserEnterpriseId: Number(EnterpriseId),
                 fcmToken

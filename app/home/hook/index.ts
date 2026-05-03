@@ -95,15 +95,15 @@ export default function useHome() {
       if (!latitudeOfEnterprise || !longitudeOfEnterprise) return window.location.href = "/";
 
 
-      const getAllPresencesOfUser = await providers.API.getAll(providers.APIUrl, "getAttendances", Number(UserId));
+      const getAllPresencesOfUser = await providers.API.getAll("https://vps118934.serveur-vps.net:4000", "getAttendances", Number(UserId));
 
       const getAllRepports = await providers.API.getAll(providers.APIUrl, "getAllRepports", null);
       const getAllRepportsOfUser = getAllRepports.filter((repport: { UserId: number }) => repport.UserId === Number(UserId));
 
-      const getUser = await providers.API.getOne(providers.APIUrl, "getUser", Number(UserId));
+      const getUser = await providers.API.getOne("https://vps118934.serveur-vps.net:4000", "getUser", Number(UserId));
 
-      const fcmTokenResponse = await providers.API.post(providers.APIUrl, "sendFcmToken", null, {
-        id: Number(UserId),
+      const fcmTokenResponse = await providers.API.post("https://vps118934.serveur-vps.net:4000", "sendFcmToken", null, {
+        UserId: Number(UserId),
         UserEnterpriseId: Number(getUser.EnterpriseId),
         fcmToken
       });

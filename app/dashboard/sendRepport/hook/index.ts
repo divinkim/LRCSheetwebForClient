@@ -94,14 +94,14 @@ export default function useSendRepport() {
         });
 
         for (const receiverId of inputs.usersIds) {
-            const notification = await providers.API.post(providers.APIUrl, "sendNotificationToWebUser", null, {
+            const notification = await providers.API.post("https://vps118934.serveur-vps.net:4000", "sendNotificationPush", null, {
                 path: "/dashboard/NOTIF/chat",
-                EnterpriseId: Number(EnterpriseId),
-                adminSectionIndex: 0,
-                adminPageIndex: 0,
+                EnterpriseId: String(EnterpriseId),
+                adminSectionIndex: "0",
+                adminPageIndex: "0",
                 messingType:"notification",//niveau app mobile
-                senderId: UserId,
-                receiverId
+                senderId: String(UserId),
+                receiverId:String(receiverId)
             })
             console.log(notification)
             const chat = await providers.API.post(providers.APIUrl, "createChatMessage", null, {
